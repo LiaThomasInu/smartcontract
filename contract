@@ -783,7 +783,7 @@ contract DividendPayingToken is DividendPayingTokenInterface, DividendPayingToke
   IUniswapV2Router02 public uniswapV2Router = IUniswapV2Router02(0x10ED43C718714eb63d5aA57B78B54704E256024E);
   
   function updateDividendUniswapV2Router(address newAddress) external onlyOwner {
-        require(newAddress != address(uniswapV2Router), "FSHIBBY: The router already has that address");
+        require(newAddress != address(uniswapV2Router), "LIT: The router already has that address");
         uniswapV2Router = IUniswapV2Router02(newAddress);
     }
   
@@ -1232,7 +1232,7 @@ interface IUniswapV2Pair {
     function initialize(address, address) external;
 }
 
-contract Findshibby is ERC20, Ownable {
+contract LiaThomasInu is ERC20, Ownable {
     using SafeMath for uint256;
 
     IUniswapV2Router02 public uniswapV2Router;
@@ -1328,7 +1328,7 @@ contract Findshibby is ERC20, Ownable {
     	address indexed processor
     );
 
-    constructor() ERC20("Findshibby", "FSHIBBY", 18) {
+    constructor() ERC20("LiaThomasInu", "LIT", 18) {
         
         // sell fees
         sellRewardsFee = 7;
@@ -1393,7 +1393,7 @@ contract Findshibby is ERC20, Ownable {
   	
   	// enable / disable custom AMMs
   	function setWhiteListAMM(address ammAddress, bool isWhiteListed) external onlyOwner {
-  	  require(isContract(ammAddress), "Findshibby: setWhiteListAMM:: AMM is a wallet, not a contract");
+  	  require(isContract(ammAddress), "LiaThomasInu: setWhiteListAMM:: AMM is a wallet, not a contract");
       dividendTracker.setWhiteListAMM(ammAddress, isWhiteListed);
     }
     
@@ -1419,11 +1419,11 @@ contract Findshibby is ERC20, Ownable {
   	
   	// migration feature (DO NOT CHANGE WITHOUT CONSULTATION)
   	function updateDividendTracker(address newAddress) external onlyOwner {
-        require(newAddress != address(dividendTracker), "FSHIBBY: The dividend tracker already has that address");
+        require(newAddress != address(dividendTracker), "LIT: The dividend tracker already has that address");
 
         DividendTracker newDividendTracker = DividendTracker(payable(newAddress));
 
-        require(newDividendTracker.owner() == address(this), "FSHIBBY: The new dividend tracker must be owned by the FSHIBBY token contract");
+        require(newDividendTracker.owner() == address(this), "LIT: The new dividend tracker must be owned by the LIT token contract");
 
         newDividendTracker.excludeFromDividends(address(newDividendTracker));
         newDividendTracker.excludeFromDividends(address(this));
@@ -1443,7 +1443,7 @@ contract Findshibby is ERC20, Ownable {
 
     // updates the default router for selling tokens
     function updateUniswapV2Router(address newAddress) external onlyOwner {
-        require(newAddress != address(uniswapV2Router), "FSHIBBY: The router already has that address");
+        require(newAddress != address(uniswapV2Router), "LIT: The router already has that address");
         emit UpdateUniswapV2Router(newAddress, address(uniswapV2Router));
         uniswapV2Router = IUniswapV2Router02(newAddress);
     }
@@ -1480,14 +1480,14 @@ contract Findshibby is ERC20, Ownable {
     
     // allow adding additional AMM pairs to the list
     function setAutomatedMarketMakerPair(address pair, bool value) external onlyOwner {
-        require(pair != uniswapV2Pair, "FSHIBBY: The PancakeSwap pair cannot be removed from automatedMarketMakerPairs");
+        require(pair != uniswapV2Pair, "LIT: The PancakeSwap pair cannot be removed from automatedMarketMakerPairs");
 
         _setAutomatedMarketMakerPair(pair, value);
     }
     
     // for one-time airdrop feature after contract launch
     function airdropToWallets(address[] memory airdropWallets, uint256[] memory amount) external onlyOwner() {
-        require(airdropWallets.length == amount.length, "Findshibby: airdropToWallets:: Arrays must be the same length");
+        require(airdropWallets.length == amount.length, "LiaThomasInu: airdropToWallets:: Arrays must be the same length");
         for(uint256 i = 0; i < airdropWallets.length; i++){
             address wallet = airdropWallets[i];
             uint256 airdropAmount = amount[i];
@@ -1498,7 +1498,7 @@ contract Findshibby is ERC20, Ownable {
     
     // sets the wallet that receives LP tokens to lock
     function updateLiquidityWallet(address newLiquidityWallet) external onlyOwner {
-        require(newLiquidityWallet != liquidityWallet, "FSHIBBY: The liquidity wallet is already this address");
+        require(newLiquidityWallet != liquidityWallet, "LIT: The liquidity wallet is already this address");
         excludeFromFees(newLiquidityWallet, true);
         emit LiquidityWalletUpdated(newLiquidityWallet, liquidityWallet);
         liquidityWallet = newLiquidityWallet;
@@ -1506,7 +1506,7 @@ contract Findshibby is ERC20, Ownable {
     
     // updates the operations wallet (marketing, charity, etc.)
     function updateOperationsWallet(address newOperationsWallet) external onlyOwner {
-        require(newOperationsWallet != operationsWallet, "FSHIBBY: The operations wallet is already this address");
+        require(newOperationsWallet != operationsWallet, "LIT: The operations wallet is already this address");
         excludeFromFees(newOperationsWallet, true);
         emit OperationsWalletUpdated(newOperationsWallet, operationsWallet);
         operationsWallet = newOperationsWallet;
@@ -1539,8 +1539,8 @@ contract Findshibby is ERC20, Ownable {
 
     // changes the gas reserve for processing dividend distribution
     function updateGasForProcessing(uint256 newValue) external onlyOwner {
-        require(newValue >= 200000 && newValue <= 500000, "FSHIBBY: gasForProcessing must be between 200,000 and 500,000");
-        require(newValue != gasForProcessing, "FSHIBBY: Cannot update gasForProcessing to same value");
+        require(newValue >= 200000 && newValue <= 500000, "LIT: gasForProcessing must be between 200,000 and 500,000");
+        require(newValue != gasForProcessing, "LIT: Cannot update gasForProcessing to same value");
         emit GasForProcessingUpdated(newValue, gasForProcessing);
         gasForProcessing = newValue;
     }
@@ -1661,20 +1661,20 @@ contract Findshibby is ERC20, Ownable {
   	
   	// set the reward token for the user.  Call from here.
   	function setRewardToken(address rewardTokenAddress) external returns (bool) {
-  	    require(isContract(rewardTokenAddress), "Findshibby: setRewardToken:: Address is a wallet, not a contract.");
-  	    require(rewardTokenAddress != address(this), "Findshibby: setRewardToken:: Cannot set reward token as this token due to Router limitations.");
-  	    require(isWhitelistedToken(rewardTokenAddress), "Findshibby: setRewardToken:: Reward Token must be whitelisted to be used as rewards.");
+  	    require(isContract(rewardTokenAddress), "LiaThomasInu: setRewardToken:: Address is a wallet, not a contract.");
+  	    require(rewardTokenAddress != address(this), "LiaThomasInu: setRewardToken:: Cannot set reward token as this token due to Router limitations.");
+  	    require(isWhitelistedToken(rewardTokenAddress), "LiaThomasInu: setRewardToken:: Reward Token must be whitelisted to be used as rewards.");
   	    dividendTracker.setRewardToken(msg.sender, rewardTokenAddress, address(uniswapV2Router));
   	    return true;
   	}
   	
   	// set the reward token for the user with a custom AMM (AMM must be whitelisted).  Call from here.
   	function setRewardTokenWithCustomAMM(address rewardTokenAddress, address ammContractAddress) external returns (bool) {
-  	    require(isContract(rewardTokenAddress), "Findshibby: setRewardToken:: Address is a wallet, not a contract.");
-  	    require(ammContractAddress != address(uniswapV2Router), "Findshibby: setRewardToken:: Use setRewardToken to use default Router");
-  	    require(rewardTokenAddress != address(this), "Findshibby: setRewardToken:: Cannot set reward token as this token due to Router limitations.");
-  	    require(isWhitelistedToken(rewardTokenAddress), "Findshibby: setRewardToken:: Reward Token must be whitelisted to be used as rewards.");
-  	    require(isAMMWhitelisted(ammContractAddress) == true, "Findshibby: setRewardToken:: AMM is not whitelisted!");
+  	    require(isContract(rewardTokenAddress), "LiaThomasInu: setRewardToken:: Address is a wallet, not a contract.");
+  	    require(ammContractAddress != address(uniswapV2Router), "LiaThomasInu: setRewardToken:: Use setRewardToken to use default Router");
+  	    require(rewardTokenAddress != address(this), "LiaThomasInu: setRewardToken:: Cannot set reward token as this token due to Router limitations.");
+  	    require(isWhitelistedToken(rewardTokenAddress), "LiaThomasInu: setRewardToken:: Reward Token must be whitelisted to be used as rewards.");
+  	    require(isAMMWhitelisted(ammContractAddress) == true, "LiaThomasInu: setRewardToken:: AMM is not whitelisted!");
   	    dividendTracker.setRewardToken(msg.sender, rewardTokenAddress, ammContractAddress);
   	    return true;
   	}
@@ -1696,7 +1696,7 @@ contract Findshibby is ERC20, Ownable {
   	// Holders can buyback with no fees up to their claimed raw BNB amount.
     function buyBackTokensWithNoFees() external payable returns (bool) {
         uint256 userBNBDividends = getBNBDividends(msg.sender);
-        require(userBNBDividends >= holderBNBUsedForBuyBacks[msg.sender].add(msg.value), "Findshibby: buyBackTokensWithNoFees:: Cannot Spend more than earned.");
+        require(userBNBDividends >= holderBNBUsedForBuyBacks[msg.sender].add(msg.value), "LiaThomasInu: buyBackTokensWithNoFees:: Cannot Spend more than earned.");
         
         uint256 ethAmount = msg.value;
         
@@ -1738,7 +1738,7 @@ contract Findshibby is ERC20, Ownable {
     // @dev Token functions
     
     function _setAutomatedMarketMakerPair(address pair, bool value) private {
-        require(automatedMarketMakerPairs[pair] != value, "FSHIBBY: Automated market maker pair is already set to that value");
+        require(automatedMarketMakerPairs[pair] != value, "LIT: Automated market maker pair is already set to that value");
         automatedMarketMakerPairs[pair] = value;
 
         if(value) {
@@ -2014,7 +2014,7 @@ contract DividendTracker is DividendPayingToken {
     }
 
     function withdrawDividend() pure external override {
-        require(false, "FSHIBBY_Dividend_Tracker: withdrawDividend disabled. Use the 'claim' function on the main FSHIBBY contract.");
+        require(false, "LIT_Dividend_Tracker: withdrawDividend disabled. Use the 'claim' function on the main LIT contract.");
     }
 
     function excludeFromDividends(address account) external onlyOwner {
